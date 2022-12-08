@@ -1,14 +1,16 @@
-// import {app, database} from '../../firebase'
+import {database,app} from '../firebase'
 import Link from "next/link";
-import {app,database} from '../firebase'
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore';
 
-function Index() {
+function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name,setName]=useState("");
+  const [username,setuserName]=useState("");
+
   
   const router = useRouter();
   const auth = getAuth();
@@ -28,17 +30,32 @@ function Index() {
       alert('user registered successfully');      
       setEmail('');
       setPassword('');
+      router.push('/home');
       
       } 
       catch (error) {
-        console.log("Something went wrong with registration: " + error);
+        router.push('/home');
       }
   }
 
   return (
-      <div className='flex items-center justify-center h-screen flex-col'>
-        <form className='bg-green-600 w-4/12 flex items-center justify-center flex-col gap-4 py-5 px-10'>
+      <div >
+        <form className='bg-green-700 flex items-center justify-center flex-col gap-4 py-5 px-10'>
           <h2 className='font-bold text-xl '>Register</h2>
+          <input 
+            type="text" 
+            placeholder='Enter Name' 
+            className='w-full py-1 px-4 border-none outline-none' 
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="text" 
+            placeholder='Enter UserName' 
+            className='w-full py-1 px-4 border-none outline-none' 
+            value={username}
+            onChange={(e) => setuserName(e.target.value)}
+          />
           <input 
             type="text" 
             placeholder='Enter Email' 
@@ -62,7 +79,7 @@ function Index() {
           >Register</button>
           <p>
             Already have an account? 
-            <Link href={'/auth/login'} className='text-blue-700'> Login</Link>
+            <Link href={'/login'} className='text-red-700'> Login</Link>
           </p>
         </form>
 
@@ -70,4 +87,4 @@ function Index() {
   )
 }
 
-export default Index
+export default Register
